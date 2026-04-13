@@ -1,0 +1,307 @@
+/* style.css — 3D Cube WebGL demo */
+
+/* ── Reset / base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #111318;
+  --surface:     #1a1d24;
+  --surface2:    #22262f;
+  --border:      #2d3240;
+  --text:        #dde2f0;
+  --text-muted:  #7a849a;
+  --accent:      #6c8cf4;
+  --accent-dark: #4a6ae0;
+  --green:       #3dcc6e;
+  --red:         #e04a4a;
+  --radius:      6px;
+  --sidebar-w:   320px;
+  --top-bar-h:   48px;
+  --font:        'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --mono:        'Fira Code', 'Consolas', 'Courier New', monospace;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ── Top bar ───────────────────────────────────────────────────────────── */
+.top-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--top-bar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  z-index: 100;
+}
+
+.top-bar__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fps-display {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+.layout {
+  display: flex;
+  height: calc(100vh - var(--top-bar-h));
+  margin-top: var(--top-bar-h);
+}
+
+/* ── Canvas area ───────────────────────────────────────────────────────── */
+.canvas-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+#glcanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+#glcanvas:active { cursor: grabbing; }
+
+.drag-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.webgl-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--red);
+  font-size: 14px;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  height: 100%;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Panel ─────────────────────────────────────────────────────────────── */
+.panel {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+}
+
+.panel__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.panel__toggle {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  text-align: left;
+}
+.panel__toggle:hover { color: var(--text); }
+
+/* ── Buttons ───────────────────────────────────────────────────────────── */
+.btn {
+  padding: 5px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font);
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.btn:hover { background: var(--border); }
+.btn:active { transform: scale(0.97); }
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn--outline:hover { background: var(--accent); color: #fff; }
+
+.btn--toggle {
+  opacity: 0.6;
+}
+.btn--toggle.active {
+  opacity: 1;
+  background: var(--accent-dark);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn--icon {
+  padding: 4px 10px;
+  font-size: 14px;
+}
+
+.controls-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+/* ── Form elements ─────────────────────────────────────────────────────── */
+.field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.select {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.slider {
+  flex: 1;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ── Matrix display ────────────────────────────────────────────────────── */
+.matrix-block {
+  margin-bottom: 12px;
+}
+
+.matrix-block h3 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.matrix-display {
+  overflow-x: auto;
+}
+
+.mat-table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.mat-table td {
+  padding: 2px 5px;
+  background: var(--surface2);
+  border-radius: 3px;
+  text-align: right;
+  color: var(--accent);
+  min-width: 50px;
+}
+
+/* ── Shader panel ──────────────────────────────────────────────────────── */
+.shader-block {
+  margin-bottom: 12px;
+}
+
+.shader-block h3 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.shader-code {
+  background: #0d0f14;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #a8d8a8;
+  white-space: pre;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  .canvas-area { flex: 1; min-height: 200px; }
+}

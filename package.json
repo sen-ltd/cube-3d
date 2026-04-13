@@ -1,0 +1,12 @@
+{
+  "name": "cube-3d",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Educational WebGL 3D cube with manual matrix math and mouse controls.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "serve": "python3 -m http.server 8080"
+  },
+  "license": "MIT"
+}

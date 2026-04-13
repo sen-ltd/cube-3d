@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Cube — WebGL Educational Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <span class="top-bar__title" data-i18n="title">3D Cube — WebGL Educational Demo</span>
+    <div class="top-bar__actions">
+      <span id="fps-display" class="fps-display">
+        <span data-i18n="fps">FPS</span>:&nbsp;<span id="fps-value">—</span>
+      </span>
+      <button id="btn-lang" class="btn btn--outline" aria-label="Toggle language">EN</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- ── Canvas ───────────────────────────────────────────────── -->
+    <main class="canvas-area">
+      <canvas id="glcanvas" role="img" aria-label="3D rotating cube rendered with WebGL"></canvas>
+      <div id="webgl-error" class="webgl-error hidden">
+        <p>⚠️ WebGL is not supported in this browser.</p>
+        <p>Please try Chrome, Firefox, or Edge.</p>
+      </div>
+      <p class="drag-hint" data-i18n="dragHint">Drag to rotate · Scroll to zoom</p>
+    </main>
+
+    <!-- ── Sidebar ────────────────────────────────────────────── -->
+    <aside class="sidebar">
+
+      <!-- Controls section -->
+      <section class="panel">
+        <h2 class="panel__title" data-i18n="controls">Controls</h2>
+        <div class="controls-row">
+          <button id="btn-auto-rotate" class="btn btn--toggle active" data-i18n="autoRotate">Auto Rotate</button>
+          <button id="btn-wireframe"   class="btn btn--toggle"        data-i18n="wireframe">Wireframe</button>
+          <button id="btn-reset"       class="btn"                    data-i18n="resetRotation">Reset</button>
+        </div>
+        <div class="controls-row">
+          <button id="btn-zoom-in"  class="btn btn--icon" data-i18n-title="zoomIn"  title="Zoom In">＋</button>
+          <button id="btn-zoom-out" class="btn btn--icon" data-i18n-title="zoomOut" title="Zoom Out">－</button>
+        </div>
+
+        <label class="field-row">
+          <span data-i18n="colorMode">Color Mode</span>
+          <select id="color-mode" class="select">
+            <option value="solid"          data-i18n="colorModeSolid">Solid</option>
+            <option value="gradient"       data-i18n="colorModeGradient">Gradient</option>
+            <option value="wireframe-only" data-i18n="colorModeWireframeOnly">Wireframe only</option>
+          </select>
+        </label>
+
+        <label class="field-row">
+          <span><span data-i18n="fov">FOV</span> <span id="fov-value">45°</span></span>
+          <input id="fov-slider" type="range" min="20" max="100" value="45" class="slider" />
+        </label>
+
+        <label class="field-row">
+          <span><span data-i18n="cameraDistance">Camera</span> <span id="cam-value">3.0</span></span>
+          <input id="cam-slider" type="range" min="1.2" max="8" step="0.1" value="3.0" class="slider" />
+        </label>
+      </section>
+
+      <!-- Matrix panel (collapsible) -->
+      <section class="panel">
+        <button id="btn-matrix-toggle" class="panel__toggle">
+          <span data-i18n="matrices">Matrices (live)</span> ▼
+        </button>
+        <div id="matrix-panel">
+          <div class="matrix-block">
+            <h3 data-i18n="matrixModel">Model Matrix (M)</h3>
+            <div id="matrix-model" class="matrix-display"></div>
+          </div>
+          <div class="matrix-block">
+            <h3 data-i18n="matrixView">View Matrix (V)</h3>
+            <div id="matrix-view" class="matrix-display"></div>
+          </div>
+          <div class="matrix-block">
+            <h3 data-i18n="matrixProjection">Projection Matrix (P)</h3>
+            <div id="matrix-proj" class="matrix-display"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Shader source panel (collapsible) -->
+      <section class="panel">
+        <button id="btn-shader-toggle" class="panel__toggle">
+          <span data-i18n="shaderSource">Shader Source</span> ▶
+        </button>
+        <div id="shader-panel" class="hidden">
+          <div class="shader-block">
+            <h3 data-i18n="vertexShader">Vertex Shader (GLSL)</h3>
+            <pre id="shader-vertex" class="shader-code"></pre>
+          </div>
+          <div class="shader-block">
+            <h3 data-i18n="fragmentShader">Fragment Shader (GLSL)</h3>
+            <pre id="shader-fragment" class="shader-code"></pre>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
