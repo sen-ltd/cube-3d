@@ -101,3 +101,10 @@ Uses Node.js built-in test runner (`node --test`) — no extra packages required
 ## License
 
 MIT — Copyright (c) 2026 SEN LLC (SEN 合同会社)
+
+<!-- sen-publish:links -->
+## Links
+
+- 🌐 Demo: https://sen.ltd/portfolio/cube-3d/
+- 📝 dev.to: https://dev.to/sendotltd/a-webgl-3d-cube-from-first-principles-handwritten-4x4-matrices-and-visible-shaders-3cml
+<!-- /sen-publish:links -->
